@@ -9,27 +9,28 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import edu.neu.cs5200.mystereo.models.PlayList;
+import edu.neu.cs5200.mystereo.models.User;
 
 public class PlayListDao {
 	EntityManagerFactory factory = Persistence
 			.createEntityManagerFactory("MyStereo");
-	EntityManager em = null;
+	EntityManager em = factory.createEntityManager();
 
 	// CRUD
 	// CREATE
-	public List<PlayList> createPlayList(PlayList playlist) {
-		List<PlayList> playlists = new ArrayList<PlayList>();
-
-		em = factory.createEntityManager();
+	public void createPlayList(PlayList playlist) {
+		//List<PlayList> playlists = new ArrayList<PlayList>();
 		em.getTransaction().begin();
 
 		em.persist(playlist);
-		Query query = em.createQuery("select playlist from PlayList playlist");
-		playlists = (List<PlayList>) query.getResultList();
-
 		em.getTransaction().commit();
-		em.close();
-		return playlists;
+		//Query query = em.createQuery("select playlist from PlayList playlist");
+		
+		//playlists = (List<PlayList>) query.getResultList();
+
+		
+	
+		//return playlists;
 	}
 
 	// READ
@@ -98,6 +99,14 @@ public class PlayListDao {
 		em.close();
 
 		return playlists;
+	}
+	
+	public static void main(String[] args){
+		UserDao udao =new UserDao();
+		User user = udao.findUser(1);
+		PlayList playlist = new PlayList(null, "hi", user, null);
+		PlayListDao pdao =new PlayListDao();
+		pdao.createPlayList(playlist);
 	}
 
 }

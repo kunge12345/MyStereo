@@ -1,5 +1,5 @@
 <%@page import="edu.neu.cs5200.mystereo.client.MusicClient"%>
-<%@page import="edu.neu.cs5200.mystereo.models.Music"%>
+<%@page import="edu.neu.cs5200.mystereo.models.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="edu.neu.cs5200.mystereo.DAO.*"%>
 <!DOCTYPE html>
@@ -35,32 +35,63 @@
 
 <body>
 	<%
-		
+		MusicDao musicdao = new MusicDao();
+		MusicClient msc = new MusicClient();
+		Music m = new Music();
+
+		PlayList2Music p2m = new PlayList2Music();
+		PlayListDao playlistdao = new PlayListDao();
+
+		PlayList2MusicDao p2mdao = new PlayList2MusicDao();
+		String action1 = request.getParameter("action");
 		String action = request.getParameter("search");
 		String artist = request.getParameter("artist");
+		String playliststr = request.getParameter("pId");
 		String track = request.getParameter("track");
-		
-		MusicClient msc = new MusicClient();
-		Music music = msc.findSongByNameAndArtist(artist, track);
-		String artUrl = music.getArtist().getUrl();
-		String alburl = music.getAlbum().getUrl();
+		Integer playlistid = null;
+		if (playliststr != null)
+			playlistid = Integer.parseInt(playliststr);
+		String mbstr = request.getParameter("musicid");
+		if (mbstr != null) {
+			m = msc.findSongByMBID(mbstr);
+			musicdao.createMusic(m);
+			p2m.setMusic(m);
+			p2m.setPlaylist(playlistdao.findPlayList(playlistid));
+			p2mdao.createPlayList2Music(p2m);
+
+		}
+
+		String artUrl = "";
+
+		if (artist != null) {
+			m = msc.findSongByNameAndArtist(artist, track);
+		}
 	%>
 
 	<div class="container">
 
 		<div class="jumbotron">
-			<h1><%=music.getName() %></h1>
-			<button name="action" value="add" type="button" class="btn btn-primary">Add to PlayList</button>
-			<p><a href=<%=artUrl%>><%=music.getArtist().getName() %></a>	</p>
-			<P><a href=<%=alburl%>><%=music.getAlbum().getName() %></a></P>
-			<p><%=music.getSummary() %></p>
+            <form>
+			<h1><%=m.getName()%></h1>
+			</form>
+			<p>
+				<a href="chooseplaylist.jsp?id=<%=m.getMbid()%>">addtoplaylist</a>
+			</p>
+			<p>
+				<a href=<%=m.getArtist().getUrl()%>><%=m.getArtist().getName()%></a>
+			</p>
+			<P>
+				<a href=<%=m.getAlbum().getUrl()%>><%=m.getAlbum().getName()%></a>
+			</P>
+			<p><%=m.getSummary()%></p>
+
 		</div>
-		
+
 
 	</div>
 
-			
-	
+
+
 
 
 

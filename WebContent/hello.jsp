@@ -19,6 +19,7 @@ out.println(user.getUsername());
 %>
 <a href="Profiledetails.jsp?id=<%= user.getuId()%>">my profile</a>  
 <a href="playlist.jsp">my playlist</a> 
+<a href="SearchForSong.jsp">search music</a>
 <%if("admin".equals(type)) 
 out.print("<a href=\"manage.jsp\">manage users</a>"); %>
 <a href="userlogin.jsp">log out</a>      

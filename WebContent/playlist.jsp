@@ -26,8 +26,8 @@
 					
 			if("create".equals(action))
 			{
-				 PlayList playlist = new PlayList(null, name, dao2.findUser(idd), null);
-				dao.createPlayList(playlist); 
+				 PlayList play = new PlayList(null, name, dao2.findUser(idd), null);
+				dao.createPlayList(play); 
 			}
 			else if("delete".equals(action))
 			{
