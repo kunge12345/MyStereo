@@ -78,7 +78,7 @@
 			<div class="row">
 				<div class="col-md-9">
 					<h1>Album</h1>
-					<a href=<%=b.getUrl()%>><%=b.getName()%></a> <br> MBID:<%=b.getMbid()%></p>
+					<a href=<%=b.getUrl()%>><%=b.getName()%></a> <br> MBID:<%=b.getMbid()%>
 
 				</div>
 				<div class="col-md-3">

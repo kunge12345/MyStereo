@@ -34,8 +34,9 @@
 </head>
 <body>
 
-<h3>search for song</h3>
+
 	<div class="container">
+	<h3>search for song</h3>
 		<form action="DisplaySong.jsp">
 			<table class="table table-striped">
 				<tr>

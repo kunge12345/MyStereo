@@ -1,84 +1,144 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import= "edu.neu.cs5200.mystereo.DAO.*, edu.neu.cs5200.mystereo.models.*,java.util.*"%>
+	pageEncoding="ISO-8859-1"
+	import="edu.neu.cs5200.mystereo.DAO.*, edu.neu.cs5200.mystereo.models.*,java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style>
+div#comment {
+	border: 1px solid #000
+}
+</style>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<title>Fol-profile</title>
 </head>
 <body>
-<%
-UserDao dao = new UserDao();
-FollowDao dao2= new FollowDao();
-String idStr=request.getParameter("id");
-Integer id=Integer.parseInt(idStr);
-User user=dao.findUser(id);
-   List<Follow> follows=new ArrayList<Follow>();
-   follows=dao2.findFollowbyuid(id);
-   List<Follow> followeds=new ArrayList<Follow>(); followeds=dao2.findFollowedbyuid(id);
-%>
-<h1>
-			Profiles
-		</h1>
+	<%
+		UserDao dao = new UserDao();
+		FollowDao dao2 = new FollowDao();
+		String idStr = request.getParameter("id");
+		Integer id = Integer.parseInt(idStr);
+		User user = dao.findUser(id);
+		List<Follow> follows = new ArrayList<Follow>();
+		follows = dao2.findFollowbyuid(id);
+		List<Follow> followeds = new ArrayList<Follow>();
+		followeds = dao2.findFollowedbyuid(id);
+	%>
+	<h1>Profiles</h1>
 	<div class="container">
 		<form action="Profiledetails.jsp">
-		<table class="table table-striped">
-			<tr>
-				<th>username</th>
-				<th>sex</th>
-				<th>description</th>
-		     	<th>type</th>
-				<th>&nbsp;</th>
-			</tr>
-			<tbody>
-
+			<table class="table table-striped">
 				<tr>
-					<td><%= user.getUsername() %></td>
-					<td><%= user.getSex() %></td>
-					<td><%= user.getDescription() %></td>
-					<td><%= user.getType() %></td>
-				</tr> 
-	
-			</tbody>
-		</table>
+					<th>username</th>
+					<th>sex</th>
+					<th>description</th>
+					<th>type</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tbody>
+
+					<tr>
+						<td><%=user.getUsername()%></td>
+						<td><%=user.getSex()%></td>
+						<td><%=user.getDescription()%></td>
+						<td><%=user.getType()%></td>
+					</tr>
+
+				</tbody>
+			</table>
 		</form>
 	</div>
 	<h1>
-	who  <%=user.getUsername() %> follow
-	</h1><table>
-				<tr>
-				<th>username</th>
-			</tr>
+		Who
+		<%=user.getUsername()%>
+		follows...
+	</h1>
+	<div class="container">
+		<table class="table table-striped">
 			<tr>
-		<% 
-		for(Follow f:followeds) 
-		{
-		%>	
-				<th><%=f.getFollowed().getUsername() %></th><th><a href="fol-profile.jsp?id=<%=f.getFollowed().getuId() %>"> profile</a></th><th><a href="fol-playlist.jsp?id=<%=f.getFollowed().getuId() %>"> playlist</a></th>
-		<%
-		}
-			%>
+				<th>username</th>
+				<th>profile</th>
+				<th>playlists</th>
 			</tr>
-			</table>
+			<tbody>
+
+				<%
+					for (Follow f : followeds) {
+				%>
+				<tr>
+					<td><%=f.getFollowed().getUsername()%></td>
+					<td><a href="fol-profile.jsp?id=<%=f.getFollowed().getuId()%>">
+							profile</a></td>
+					<td><a
+						href="fol-playlist.jsp?id=<%=f.getFollowed().getuId()%>">
+							playlist</a></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+
+		</table>
+	</div>
 	<h1>
-	who follow <%=user.getUsername()%>
-	
-	</h1><table>
-				<tr>
-				<th>username</th>
-			</tr>
+		who follow
+		<%=user.getUsername()%>
+
+	</h1>
+	<div class="container">
+		<table class="table table-striped">
 			<tr>
-		<% 
-		for(Follow f:follows) 
-		{
-		%>	
-				<th><%=f.getFollow().getUsername() %></th><th><a href="fol-profile.jsp?id=<%=f.getFollow().getuId() %>"> profile</a></th><th><a href="fol-playlist.jsp?id=<%=f.getFollow().getuId() %>"> playlist</a></th>
-					<%
-		}
-			%>
+				<th>username</th>
+				<th>profile</th>
+				<th>playlists</th>
 			</tr>
-			</table>
-	<a href="hello.jsp?id=<%= Integer.parseInt((String)session.getAttribute("userid")) %>" >return</a>   
+			<tbody>
+
+				<%
+					for (Follow f : follows) {
+				%>
+				<tr>
+					<td><%=f.getFollow().getUsername()%></td>
+					<td><a href="fol-profile.jsp?id=<%=f.getFollow().getuId()%>">
+							profile</a></td>
+					<td><a href="fol-playlist.jsp?id=<%=f.getFollow().getuId()%>">
+							playlist</a></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+
+		</table>
+	</div>
+	<a
+		href="hello.jsp?id=<%=Integer.parseInt((String) session.getAttribute("userid"))%>">return</a>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

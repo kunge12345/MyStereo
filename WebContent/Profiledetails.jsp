@@ -1,142 +1,230 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import= "edu.neu.cs5200.mystereo.DAO.*, edu.neu.cs5200.mystereo.models.*,java.util.*"%>
+	pageEncoding="ISO-8859-1"
+	import="edu.neu.cs5200.mystereo.DAO.*, edu.neu.cs5200.mystereo.models.*,java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style>
+div#comment {
+	border: 1px solid #000
+}
+</style>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<title>Personal Profile</title>
 </head>
 <body>
-<%
-UserDao dao = new UserDao();
-FollowDao dao2= new FollowDao();
-String message = (String)(session.getAttribute("userid"));
-Integer id=Integer.parseInt(message);
-if("admin".equals(dao.findUser(id).getType()))
-		{
-	if(request.getParameter("id")!=null)
-	session.setAttribute("invest",  request.getParameter("id"));
-	id=Integer.parseInt((String)session.getAttribute("invest"));
-	
+	<%
+		UserDao dao = new UserDao();
+		FollowDao dao2 = new FollowDao();
+		String message = (String) (session.getAttribute("userid"));
+		Integer id = Integer.parseInt(message);
+		if ("admin".equals(dao.findUser(id).getType())) {
+			if (request.getParameter("id") != null)
+				session.setAttribute("invest", request.getParameter("id"));
+			id = Integer.parseInt((String) session.getAttribute("invest"));
+
 		}
-User user=dao.findUser(id);
-String action = request.getParameter("action");
-String username  = request.getParameter("username");
-String password  = request.getParameter("password");
-String sex  = request.getParameter("sex");
-String description  = request.getParameter("description");
-	
-if("update".equals(action))
-{
-	 User newuser = new User(user.getuId(), username,password,sex,description,user.getPlaylists(),user.getFollows(),user.getFolloweds(),user.getComments(),"user");
-	dao.updateUser(user.getuId(),newuser); 
-}
-String fidStr  = request.getParameter("fid");
-Integer fid=0;
-if(fidStr!=null)
-{
-      	fid=Integer.parseInt(fidStr);
-}
-if("delete".equals(action))
-{
-	dao2.removeFollow(fid);
-}
-if("add".equals(action))
-{
-	 Follow newfollow = new Follow(null, user,dao.findUserbyName(username));
-	dao2.updateFollow(null,newfollow); 
-}
-   List<Follow> follows=new ArrayList<Follow>();
-   follows=dao2.findFollowbyuid(id);
-   List<Follow> followeds=new ArrayList<Follow>(); followeds=dao2.findFollowedbyuid(id);
-%>
-<h1>
-			Profiles
-		</h1>
+		User user = dao.findUser(id);
+		String action = request.getParameter("action");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String sex = request.getParameter("sex");
+		String description = request.getParameter("description");
+
+		if ("update".equals(action)) {
+			User newuser = new User(user.getuId(), username, password, sex,
+					description, user.getPlaylists(), user.getFollows(),
+					user.getFolloweds(), user.getComments(), "user");
+			dao.updateUser(user.getuId(), newuser);
+		}
+		String fidStr = request.getParameter("fid");
+		Integer fid = 0;
+		if (fidStr != null) {
+			fid = Integer.parseInt(fidStr);
+		}
+		if ("delete".equals(action)) {
+			dao2.removeFollow(fid);
+		}
+		if ("add".equals(action)) {
+			Follow newfollow = new Follow(null, user,
+					dao.findUserbyName(username));
+			dao2.updateFollow(null, newfollow);
+		}
+		List<Follow> follows = new ArrayList<Follow>();
+		follows = dao2.findFollowbyuid(id);
+		List<Follow> followeds = new ArrayList<Follow>();
+		followeds = dao2.findFollowedbyuid(id);
+		CommentDao dao3 = new CommentDao();
+		List<Comment> comments = new ArrayList<Comment>();
+		comments = dao3.findAllComments();
+	%>
 	<div class="container">
-		<form action="Profiledetails.jsp">
+		<div class="container">
+			<h1><%=user.getUsername()%>'s Profile
+			</h1>
+			<form action="Profiledetails.jsp">
+				<table class="table table-striped">
+					<tr>
+						<th>username</th>
+						<th>password</th>
+						<th>sex</th>
+						<th>description</th>
+						<th>type</th>
+						<th>&nbsp;</th>
+					</tr>
+
+					<tbody>
+						<tr>
+							<td><%=user.getUsername()%></td>
+							<td><%=user.getPassword()%></td>
+							<td><%=user.getSex()%></td>
+							<td><%=user.getDescription()%></td>
+							<td><%=user.getType()%></td>
+						</tr>
+						<tr>
+							<td><input name="username" class="form-control" /></td>
+							<td><input name="password" class="form-control" /></td>
+							<td><input name="sex" class="form-control" /></td>
+							<td><input name="description" class="form-control" /></td>
+							<td>&nbsp;</td>
+							<td>
+								<button class="btn btn-primary" type="submit" name="action"
+									value="update">update</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<h1>
+			Who you(<%=user.getUsername()%>) follow...
+		</h1>
 		<table class="table table-striped">
 			<tr>
 				<th>username</th>
-				<th>password</th>
-				<th>sex</th>
-				<th>description</th>
-		     	<th>type</th>
-				<th>&nbsp;</th>
-			</tr>
-			<tr>
-				<td><input name="username" class="form-control"/></td>
-				<td><input name="password" class="form-control"/></td>
-				<td><input name="sex" class="form-control"/></td>
-				<td><input name="description" class="form-control"/></td>
-	<td>&nbsp;</td>
-				<td>
-					<button class="btn btn-primary" type="submit" name="action" value="update">update</button>
-				</td>
+				<th>profile</th>
+				<th>playlists</th>
 			</tr>
 			<tbody>
 
+				<%
+					for (Follow f : followeds) {
+				%>
 				<tr>
-					<td><%= user.getUsername() %></td>
-					<td><%= user.getPassword() %></td>
-					<td><%= user.getSex() %></td>
-					<td><%= user.getDescription() %></td>
-					<td><%= user.getType() %></td>
-				</tr> 
-	
+					<td><%=f.getFollowed().getUsername()%></td>
+					<td><a href="fol-profile.jsp?id=<%=f.getFollowed().getuId()%>">
+							profile</a></td>
+					<td><a
+						href="fol-playlist.jsp?id=<%=f.getFollowed().getuId()%>">
+							playlists</a></td>
+					<td><a
+						href="Profiledetails.jsp?fid=<%=f.getFollowed().getuId()%>&action=delete"
+						type="button" class="btn btn-danger"> delete</a></td>
+				</tr>
+				<%
+					}
+				%>
+
+			</tbody>
+
+		</table>
+		<div class="container">
+			<form action="Profiledetails.jsp">
+				<table class="table table-striped">
+
+					<tr>
+						<td><input name="username" class="form-control" /></td>
+						<td>
+							<button class="btn btn-primary" type="submit" name="action"
+								value="add">add</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<h1>
+			Who follows you(<%=user.getUsername()%>)...
+		</h1>
+		<table class="table table-striped">
+			<tr>
+				<th>username</th>
+				<th>profile</th>
+				<th>playlists</th>
+			</tr>
+			<tbody>
+
+				<%
+					for (Follow f : follows) {
+				%>
+				<tr>
+					<td><%=f.getFollow().getUsername()%></td>
+					<td><a href="fol-profile.jsp?id=<%=f.getFollow().getuId()%>">
+							profile</a></td>
+					<td><a href="fol-playlist.jsp?id=<%=f.getFollow().getuId()%>">
+							playlist</a></td>
+				</tr>
+				<%
+					}
+				%>
+
 			</tbody>
 		</table>
-		</form>
-	</div>
-	<h1>
-	who  you follow
-	</h1><table>
+		<h1>your comments</h1>
+
+
+		<%
+			for (Comment comment : comments) {
+				if (comment.getUser().getuId() == user.getuId()) {
+		%>
+
+		<div class="jumbotron">
+			<table>
 				<tr>
-				<th>username</th>
-			</tr>
-			<tr>
-		<% 
-		for(Follow f:followeds) 
-		{
-		%>	
-				<th><%=f.getFollowed().getUsername() %></th><th><a href="fol-profile.jsp?id=<%=f.getFollowed().getuId() %>"> profile</a></th><th><a href="fol-playlist.jsp?id=<%=f.getFollowed().getuId() %>"> playlist</a></th>
-					<th><a href="Profiledetails.jsp?fid=<%=f.getFollowed().getuId() %>&action=delete"> delete</a></th><%
-		}
-			%>
-			</tr>
-			</table>
-	<div class="container">
-		<form action="Profiledetails.jsp">
-		<table class="table table-striped">
-		
-			<tr>
-				<td><input name="username" class="form-control"/></td>
-								<td>
-					<button class="btn btn-primary" type="submit" name="action" value="add">add</button>
-				</td>
-			</tr>
-		</table>
-		</form>
-	</div>
-	<h1>
-	who follow you
-	
-	</h1><table>
+					<td>Music: <a
+					href="musicDetails.jsp?id=<%=comment.getMusic().getMsid()%>"><%=comment.getMusic().getName()%></a></th>
+				</tr>
 				<tr>
-				<th>username</th>
-			</tr>
-			<tr>
-		<% 
-		for(Follow f:follows) 
-		{
-		%>	
-				<th><%=f.getFollow().getUsername() %></th><th><a href="fol-profile.jsp?id=<%=f.getFollow().getuId() %>"> profile</a></th><th><a href="fol-playlist.jsp?id=<%=f.getFollow().getuId() %>"> playlist</a></th>
-					<%
-		}
-			%>
-			</tr>
+					<td>Title:<%=comment.getTitle()%></th>
+				</tr>
+				<tr>
+					<td>Content:<%=comment.getContent()%></th>
+				</tr>
 			</table>
-	<a href="hello.jsp?id=<%= Integer.parseInt((String)session.getAttribute("userid")) %>" >return</a>   
+		</div>
+		<%
+			}
+			}
+		%>
+
+	</div>
+	<a
+		href="hello.jsp?id=<%=Integer.parseInt((String) session.getAttribute("userid"))%>">return</a>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

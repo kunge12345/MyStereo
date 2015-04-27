@@ -31,7 +31,9 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <style>
-div#comment{border:1px solid #000} 
+div#comment {
+	border: 1px solid #000
+}
 </style>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -42,20 +44,20 @@ div#comment{border:1px solid #000}
 </head>
 <body>
 	<%
-	    ArtistClient asc = new ArtistClient();
-	    AlbumClient bsc = new AlbumClient();
+		ArtistClient asc = new ArtistClient();
+		AlbumClient bsc = new AlbumClient();
 		MusicDao musicdao = new MusicDao();
-	    ArtistDao atidao = new ArtistDao();
-	    AlbumDao abdao = new AlbumDao();
+		ArtistDao atidao = new ArtistDao();
+		AlbumDao abdao = new AlbumDao();
 		MusicClient msc = new MusicClient();
 		Music m = new Music();
-		Artist art=new Artist();
-		Album b=new Album();
-		String alstr="";
-		String atstr="";
-		int k1=0;
-		int k2=0;
-		int k3=0;
+		Artist art = new Artist();
+		Album b = new Album();
+		String alstr = "";
+		String atstr = "";
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
 		PlayList2Music p2m = new PlayList2Music();
 		PlayListDao playlistdao = new PlayListDao();
 		PlayList2MusicDao p2mdao = new PlayList2MusicDao();
@@ -66,62 +68,58 @@ div#comment{border:1px solid #000}
 		String track = request.getParameter("track");
 		System.out.println(artist);
 		System.out.println(track);
-		if((artist!=null)&(track!=null)){
-			artist = URLEncoder.encode(artist,"UTF-8");
-			track = URLEncoder.encode(track,"UTF-8");
+		if ((artist != null) & (track != null)) {
+			artist = URLEncoder.encode(artist, "UTF-8");
+			track = URLEncoder.encode(track, "UTF-8");
 		}
 
 		System.out.println(artist);
 		System.out.println(track);
-		
-		
-		
+
 		Integer playlistid = null;
-		String mbid="";
+		String mbid = "";
 		if (playliststr != null)
 			playlistid = Integer.parseInt(playliststr);
 		String mbstr = request.getParameter("musicid");
-        String mbs="";
-        
+		String mbs = "";
+
 		if (artist != null) {
 			m = msc.findSongByNameAndArtist(artist, track);
-			mbs=m.getMbid();
-			alstr= m.getAlbum().getMbid();
-			b=bsc.findAlbumByMBID(alstr);
-			atstr=b.getArtist().getMbid();
-			b=bsc.findAlbumByMBID(alstr);
-			art=asc.findArtistByMBID(atstr);			
+			mbs = m.getMbid();
+			alstr = m.getAlbum().getMbid();
+			b = bsc.findAlbumByMBID(alstr);
+			atstr = b.getArtist().getMbid();
+			b = bsc.findAlbumByMBID(alstr);
+			art = asc.findArtistByMBID(atstr);
 			m.setAlbum(null);
 			b.setMusic(null);
 			b.setArtist(null);
 			art.setAlbums(null);
-			if(atidao.findArtistByMb(atstr).getMbid()==null)
-			atidao.createArtist(art);
-			art=atidao.findArtistByMb(atstr);
+			if (atidao.findArtistByMb(atstr).getMbid() == null)
+				atidao.createArtist(art);
+			art = atidao.findArtistByMb(atstr);
 			b.setArtist(art);
-	
-			
-			if(abdao.findAlbumByMb(alstr).getMbid()==null)
-			abdao.updateAlbum(null,b);
-			b=abdao.findAlbumByMb(alstr);
+
+			if (abdao.findAlbumByMb(alstr).getMbid() == null)
+				abdao.updateAlbum(null, b);
+			b = abdao.findAlbumByMb(alstr);
 			m.setAlbum(b);
-			if(musicdao.findMusicByMB(mbs).getMbid()==null)
-			musicdao.updateMusic(null,m);
-			m=musicdao.findMusicByMB(mbs);
-			session.setAttribute("mbt",m.getMsid());
-	
+			if (musicdao.findMusicByMB(mbs).getMbid() == null)
+				musicdao.updateMusic(null, m);
+			m = musicdao.findMusicByMB(mbs);
+			session.setAttribute("mbt", m.getMsid());
+
 		}
-		
+
 		if (mbstr != null) {
-			m=musicdao.findMusicByMB(mbstr);	
-			
+			m = musicdao.findMusicByMB(mbstr);
+
 			p2m.setMusic(m);
 			p2m.setPlaylist(playlistdao.findPlayList(playlistid));
-			p2mdao.updatePlayList2Music(null,p2m);
+			p2mdao.updatePlayList2Music(null, p2m);
 		}
 
 		String artUrl = "";
-		
 
 		// JSP codes to add a new comment 
 
@@ -132,31 +130,24 @@ div#comment{border:1px solid #000}
 		String act = request.getParameter("act");
 		String name = request.getParameter("name");
 		String title = request.getParameter("title");
-		
-		
-		
+
 		CommentDao cdao = new CommentDao();
 		if ("create".equals(act)) {
-			Integer mbt=(Integer)session.getAttribute("mbt");
-			m=musicdao.findMusic(mbt);
-			
+			Integer mbt = (Integer) session.getAttribute("mbt");
+			m = musicdao.findMusic(mbt);
+
 			Comment comment = new Comment(null, title, name, user, m);
 			cdao.createComment(comment);
-			
-			
+
 		}
 
-		
 		// JSP codes to display comments
-		List<Comment> comments=new ArrayList<Comment>();
-		List<Comment> commentss =  cdao.findAllComments();
-		for(Comment c:commentss)
-		{
-			if(c.getMusic().getMsid()==m.getMsid())
+		List<Comment> comments = new ArrayList<Comment>();
+		List<Comment> commentss = cdao.findAllComments();
+		for (Comment c : commentss) {
+			if (c.getMusic().getMsid() == m.getMsid())
 				comments.add(c);
 		}
-		
-
 	%>
 
 	<div class="container">
@@ -166,13 +157,14 @@ div#comment{border:1px solid #000}
 				<h1><%=m.getName()%></h1>
 			</form>
 			<p>
-				<a href="chooseplaylist.jsp?id=<%=m.getMbid()%>">addtoplaylist</a>
+				<a type="button" class="btn btn-primary"
+					href="chooseplaylist.jsp?id=<%=m.getMbid()%>">Add To Playlist</a>
 			</p>
 			<p>
-				<a href=<%=m.getAlbum().getArtist().getUrl()%>><%=m.getAlbum().getArtist().getName()%></a>
+				<a href=<%=m.getAlbum().getArtist().getUrl()%>>Artist: <%=m.getAlbum().getArtist().getName()%></a>
 			</p>
 			<P>
-				<a href=<%=m.getAlbum().getUrl()%>><%=m.getAlbum().getName()%></a>
+				<a href=<%=m.getAlbum().getUrl()%>>Album: <%=m.getAlbum().getName()%></a>
 			</P>
 			<p><%=m.getSummary()%></p>
 
@@ -180,19 +172,26 @@ div#comment{border:1px solid #000}
 
 		<!-- Display comments -->
 		<%
-			if (comments.isEmpty()!=true) {
+			if (comments.isEmpty() != true) {
 		%>
 		<div class="jumbotron">
 			<%
 				for (Comment cmt : comments) {
 			%>
 			<div id="comment">
-			<h3>Title: <%=cmt.getTitle()%></h3>
-			<p><a href="fol-profile.jsp?id=<%=cmt.getUser().getuId()%>">Username: <%=cmt.getUser().getUsername()%></a></p>
-			<p>
-				Content: <%=cmt.getContent()%>
-			</p>
+				<h3>
+					Title:
+					<%=cmt.getTitle()%></h3>
+				<p>
+					<a href="fol-profile.jsp?id=<%=cmt.getUser().getuId()%>">Username:
+						<%=cmt.getUser().getUsername()%></a>
+				</p>
+				<p>
+					Content:
+					<%=cmt.getContent()%>
+				</p>
 			</div>
+			<br>
 			<%
 				}
 			%>
