@@ -104,10 +104,10 @@ div#comment {
 							<td><%=user.getType()%></td>
 						</tr>
 						<tr>
-							<td><input name="username" class="form-control" /></td>
-							<td><input name="password" class="form-control" /></td>
-							<td><input name="sex" class="form-control" /></td>
-							<td><input name="description" class="form-control" /></td>
+							<td><input name="username" class="form-control" /><%=user.getUsername()%></td>
+							<td><input name="password" class="form-control" /><%=user.getPassword()%></td>
+							<td><input name="sex" class="form-control" /><%=user.getSex()%></td>
+							<td><input name="description" class="form-control" /><%=user.getDescription()%></td>
 							<td>&nbsp;</td>
 							<td>
 								<button class="btn btn-primary" type="submit" name="action"
@@ -140,7 +140,7 @@ div#comment {
 						href="fol-playlist.jsp?id=<%=f.getFollowed().getuId()%>">
 							playlists</a></td>
 					<td><a
-						href="Profiledetails.jsp?fid=<%=f.getFollowed().getuId()%>&action=delete"
+						href="Profiledetails.jsp?fid=<%=f.getFid()%>&action=delete"
 						type="button" class="btn btn-danger"> delete</a></td>
 				</tr>
 				<%
