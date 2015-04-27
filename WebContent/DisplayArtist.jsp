@@ -50,6 +50,13 @@
 		
 		String atstr="";
 		String artist = request.getParameter("artist");
+		int err=0;
+		String FIND_ARTIST_BY_NAME = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=ARTIST&api_key=14debcea4d95e934a86515e3327ee949&format=json";
+		String urlStr = FIND_ARTIST_BY_NAME.replace("ARTIST", artist);
+		String json = asc.getJsonStringForUrl(urlStr);
+	json = json.substring(2, 7);
+			if("error".equals(json))
+				err=1;
 		if((artist!=null)){
 			artist = URLEncoder.encode(artist,"UTF-8");
 			
@@ -59,11 +66,12 @@
 		
 		
 		
-		
+
 		
         
 		if (artist != null) {
-			
+			if(err==0)
+			{
 		
 			
 			art=asc.findArtistByName(artist);
@@ -73,7 +81,7 @@
 			if(atidao.findArtistByMb(atstr).getMbid()==null)
 			atidao.createArtist(art);
 			art=atidao.findArtistByMb(atstr);
-		
+			}
 			
 	
 		}
@@ -86,7 +94,7 @@
 
 		
 
-	%>
+if(err==0)	{%>
 
 	<div class="container">
 
@@ -103,7 +111,7 @@
 		</div>
 		</div>
 
-<a href="hello.jsp">return</a>
+
 
 
 
@@ -112,4 +120,8 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </body>
+<% }
+else{%><h1>sorry,have tried hard but can't find the artist</h1><%}%>
+
+<a href="hello.jsp">return</a>
 </html>

@@ -95,7 +95,7 @@
         %>
 					<tr>
 						<td><%=user.getuId() %></td>
-						<td><a href="Profiledetails.jsp?id=<%=user.getuId()%>"><%=user.getUsername() %></a></td>
+						<td><a href="fol-profile.jsp?id=<%=user.getuId()%>"><%=user.getUsername() %></a></td>
 						<td><%=user.getUsername() %></td>
 						<td><%=user.getPassword() %></td>
 						<td><%=user.getSex() %></td>

@@ -68,6 +68,17 @@ div#comment {
 		String track = request.getParameter("track");
 		System.out.println(artist);
 		System.out.println(track);
+		
+		int err=0;
+String FIND_SONG_BY_NAME_AND_ARTIST = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&artist=ARTIST&track=TRACK&format=json";
+		 String FIND_SONG_BY_MBID = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&mbid=MBID&format=json";
+		String urlStr = FIND_SONG_BY_NAME_AND_ARTIST.replace("ARTIST", artist)
+					.replace("TRACK", track);
+			String json = msc.getJsonStringForUrl(urlStr);
+			json = json.substring(2, 7);
+			if("error".equals(json))
+				err=1;
+			
 		if ((artist != null) & (track != null)) {
 			artist = URLEncoder.encode(artist, "UTF-8");
 			track = URLEncoder.encode(track, "UTF-8");
@@ -83,8 +94,21 @@ div#comment {
 		String mbstr = request.getParameter("musicid");
 		String mbs = "";
 
+
+
+
+
+
+
 		if (artist != null) {
-			m = msc.findSongByNameAndArtist(artist, track);
+			
+			if(err==1)
+			{
+				m=new Music(null,null,null,null,null,null,null,null);
+			}
+			else
+			{
+				m = msc.findSongByNameAndArtist(artist, track);
 			mbs = m.getMbid();
 			alstr = m.getAlbum().getMbid();
 			b = bsc.findAlbumByMBID(alstr);
@@ -108,6 +132,7 @@ div#comment {
 				musicdao.updateMusic(null, m);
 			m = musicdao.findMusicByMB(mbs);
 			session.setAttribute("mbt", m.getMsid());
+			}
 
 		}
 
@@ -148,7 +173,11 @@ div#comment {
 			if (c.getMusic().getMsid() == m.getMsid())
 				comments.add(c);
 		}
-	%>
+if(err==0)
+	
+{
+%>
+
 
 	<div class="container">
 
@@ -222,4 +251,9 @@ div#comment {
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </body>
+
+<% }
+else
+{%><h1>sorry, have tried hard but can't find the music</h1>
+<a href="hello.jsp">return</a><%}%>
 </html>

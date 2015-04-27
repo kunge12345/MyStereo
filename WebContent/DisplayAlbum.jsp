@@ -50,18 +50,25 @@
 		Album b = new Album();
 		String alstr = "";
 		String atstr = "";
-		int k1 = 0;
-		int k2 = 0;
-		int k3 = 0;
+		int err  = 0;	
 		String action = request.getParameter("search");
 		String artist = request.getParameter("artist");
 		String album = request.getParameter("album");
+		 String FIND_ALBUM_BY_NAME_AND_ARTIST = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=14debcea4d95e934a86515e3327ee949&artist=ARTIST&album=NAME&format=json";
+		 String FIND_ALBUM_BY_MBID = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=14debcea4d95e934a86515e3327ee949&mbid=MBID&format=json";
+		 	String urlStr = FIND_ALBUM_BY_NAME_AND_ARTIST.replace("ARTIST", artist).replace("NAME", album);
+		 			String json = bsc.getJsonStringForUrl(urlStr);
+		 			json = json.substring(2, 7);
+		 			if("error".equals(json))
+		 				err=1;
 		if ((artist != null) & (album != null)) {
 			artist = URLEncoder.encode(artist, "UTF-8");
 			album = URLEncoder.encode(album, "UTF-8");
 		}
 
 		if (artist != null) {
+			if(err==0)
+			{
 			b = bsc.findAlbumByNameAndArtist(album, artist);
 
 			atstr = b.getArtist().getMbid();
@@ -78,10 +85,12 @@
 			if (abdao.findAlbumByMb(alstr).getMbid() == null)
 				abdao.updateAlbum(null, b);
 			b = abdao.findAlbumByMb(alstr);
-
+			}
 		}
 
 		String artUrl = "";
+		if(err==0)
+		{
 	%>
 
 	<div class="container">
@@ -113,4 +122,7 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 </body>
+<% }else{%><h1>sorry,have tried hard but can't find the album</h1>
+<a href="hello.jsp">return</a>
+<%} %>
 </html>
