@@ -32,7 +32,7 @@
 			{
 		%>	<tr>
 				<td>
-					<a href="Displaysong.jsp?musicid=<%=idStr%>&pId=<%=playlist.getpId()%>">
+					<a href="DisplaySong.jsp?musicid=<%=idStr%>&pId=<%=playlist.getpId()%>">
 					<%= playlist.getTitle()%>
 					</a>
 				</td>

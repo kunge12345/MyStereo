@@ -31,20 +31,15 @@ public class AlbumDao {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Album> createAlbum(Album album){
-		List<Album> albums = new ArrayList<Album>();
-
+	public void createAlbum(Album album){
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
-
 		em.persist(album);
-		Query query = em.createQuery("select album from Album album");
-		albums = (List<Album>) query.getResultList();
-		
 		em.getTransaction().commit();
 		em.close();
-		return albums;
+	
 	}
+	
 	
 	//READ
 	@GET
@@ -53,12 +48,27 @@ public class AlbumDao {
 	public Album findAlbum(@PathParam("ID")int albumId) {
 		em = factory.createEntityManager();
 		Album album =null;
-		;
 		album = em.find(Album.class, albumId);
 		
 		em.close();
 		return album;
 
+	}
+	public Album findAlbumByMb(String Mbid) {
+		List<Album> albums= new ArrayList<Album>();
+		Album album=new Album();
+		em = factory.createEntityManager();
+	
+
+		Query query = em.createQuery("select album from Album album where album.mbid=?1");
+		query.setParameter(1,Mbid); 
+		albums =(List<Album>)query.getResultList();
+		for (Album a:albums)
+		{
+			album=a;
+		}
+		em.close();
+		return album;
 	}
 	
 	//READALL
@@ -70,54 +80,45 @@ public class AlbumDao {
 		em = factory.createEntityManager();
 	
 
-		Query query = em.createQuery("select album from Album album");
+		Query query = em.createQuery("select album from Album album where mbid=?1");
+
 		albums = (List<Album>) query.getResultList();
 
 
 		em.close();
 		return albums;
 	}
-	
+
 	//UPDATE
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Album> updateAlbum(@PathParam("id")int albumId, Album album) {
-		List<Album> albums = new ArrayList<Album>();
+	public void updateAlbum(@PathParam("id")Integer albumId, Album album) {
+
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
 		
 		album.setAlbumId(albumId);;
 		em.merge(album);
-		Query query = em.createQuery("select album from Album album");
-		albums = (List<Album>) query.getResultList();
-
+		
 		em.getTransaction().commit();
 		em.close();
-		return albums;
 	}
 	
 	//DELETE
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Album> removeAlbum(@PathParam("id")int albumId){
-		List<Album> albums = new ArrayList<Album>();
+	public void removeAlbum(@PathParam("id")int albumId){
 		Album album = null;
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
-		
 		album = em.find(Album.class, albumId);
 		em.remove(album);
-		
-		Query query = em.createQuery("select album from Album album");
-		albums = (List<Album>) query.getResultList();
-		
 		em.getTransaction().commit();
 		em.close();
-		
-		return albums;
+
 	}
 
 

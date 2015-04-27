@@ -31,7 +31,17 @@ public class UserDao {
 		return user;
 
 	}
-	
+	public User findUserbyName(String name) {
+		List<User> users = new ArrayList<User>();
+        User user=new User();
+
+		Query query = em.createQuery("select user from User user where user.username=?1");
+       query.setParameter(1, name);
+		users = (List<User>) query.getResultList();
+for(User u:users)
+       user=u;
+	return user;
+	}
 	public List<User> findAllUsers() {
 		List<User> users = new ArrayList<User>();
 

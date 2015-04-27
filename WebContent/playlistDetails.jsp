@@ -10,58 +10,47 @@
 </head>
 <body>
 	<div class="container">
-		<%
-		UserDao dao2 = new UserDao();
-			PlayListDao dao = new PlayListDao();
+		<%PlayList2MusicDao dao2=new PlayList2MusicDao();
+		PlayListDao dao = new PlayListDao();
 		
-			String message = (String)(session.getAttribute("userid"));
-			Integer idd=Integer.parseInt(message);
+		String iddStr  = request.getParameter("idd");
+		Integer idd=null;
+		if(iddStr!=null)
+		idd = Integer.parseInt(iddStr);
 			String action = request.getParameter("action");
 			String idStr  = request.getParameter("id");
-			String name  = request.getParameter("name");
 			Integer id=null;
 			if(idStr!=null)
 			id = Integer.parseInt(idStr);
 			
 					
-			if("create".equals(action))
+			
+				
+		     if("delete".equals(action))
 			{
-				User user=dao2.findUser(idd);
-				 PlayList play = new PlayList(null, name, user, null);
-				dao.createPlayList( play); 
-			}
-			else if("delete".equals(action))
-			{
-				dao.removePlayList(id);
+				dao2.removePlayList2Music(idd);
 			}
 				
-			List<PlayList> playlists = dao.findAllPlayLists(idd);
+			List<PlayList2Music> p2m = dao2.findMusicbyPid(id);
 		%>
 		<h1>
-			PlayLists
+			My music
 		</h1>
-		<form action="playlist.jsp">
 		<table class="table table-striped">
 			<tr>
 				<th>name</th>
 				<th>&nbsp;</th>
 			</tr>
-			<tr>
-				<td><input name="name" class="form-control"/></td>
-				<td>
-					<button class="btn btn-primary" type="submit" name="action" value="create" name="idd" value=idd>Create</button>
-				</td>
-			</tr>
 		<%
-			for(PlayList playlist : playlists)
+			for(PlayList2Music play : p2m)
 			{
 		%>	<tr>
 				<td>
-					<a href="playlistDetails.jsp?id=<%= playlist.getpId() %>">
-					<%= playlist.getTitle() %>
+					<a href="musicDetails.jsp?id=<%= play.getMusic().getMsid() %>">
+					<%= play.getMusic().getName() %>
 					</a>
 				<td>
-					<a href="playlist.jsp?action=delete&id=<%= playlist.getpId() %>" class="btn btn-danger">Delete</a>
+					<a href="playlistDetails.jsp?action=delete&id=<%= play.getMusic().getMsid() %>&idd=<%= play.getId() %>" class="btn btn-danger">Delete</a>
 				</td>
 			</tr>
 		<%
@@ -69,7 +58,6 @@
 		%>
 		</table>
 		<a href=hello.jsp>return</a>
-		</form>
 	</div>
 </body>
 </html>

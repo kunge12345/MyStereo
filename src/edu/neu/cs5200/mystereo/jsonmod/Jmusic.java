@@ -116,7 +116,6 @@ public class Jmusic {
 		album = albc.findAlbumByMBID(this.getAlbum().getMbid());
 		artist = artc.findArtistByMBID(this.getArtist().getMbid());
 		music.setAlbum(album);
-		music.setArtist(artist);
 		music.setMbid(this.getMbid());
 		music.setName(this.getName());
 		music.setUrl(this.getUrl());

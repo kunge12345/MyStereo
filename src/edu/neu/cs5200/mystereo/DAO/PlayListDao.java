@@ -64,20 +64,16 @@ public class PlayListDao {
 	}
 
 	// UPDATE
-	public List<PlayList> updatePlayList(int playlistId, PlayList playlist) {
-		List<PlayList> playlists = new ArrayList<PlayList>();
+	public void updatePlayList(Integer playlistId, PlayList playlist) {
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
 
 		playlist.setpId(playlistId);
 		em.merge(playlist);
-		Query query = em
-				.createQuery("select playlist from PlayList playlist");
-		playlists = (List<PlayList>) query.getResultList();
 
 		em.getTransaction().commit();
 		em.close();
-		return playlists;
+
 	}
 
 	// DELETE

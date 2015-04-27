@@ -2,6 +2,7 @@ package edu.neu.cs5200.mystereo.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -16,6 +17,12 @@ public class User {
 	private String description;
 	@OneToMany(mappedBy = "user")
 	private List<PlayList> playlists;
+	@OneToMany(mappedBy = "follow")
+	private List<Follow> follows;
+	@OneToMany(mappedBy = "followed")
+	private List<Follow> followeds;
+	@OneToMany(mappedBy="user")
+	private List<Comment> comments;
 	private String type;
 
 	public Integer getuId() {
@@ -78,8 +85,34 @@ public class User {
 
 	
 
+	public List<Follow> getFollows() {
+		return follows;
+	}
+
+	public void setFollows(List<Follow> follows) {
+		this.follows = follows;
+	}
+
+	public List<Follow> getFolloweds() {
+		return followeds;
+	}
+
+	public void setFolloweds(List<Follow> followeds) {
+		this.followeds = followeds;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	
 	public User(Integer uId, String username, String password, String sex,
-			String description, List<PlayList> playlists, String type) {
+			String description, List<PlayList> playlists, List<Follow> follows,
+			List<Follow> followeds, List<Comment> comments, String type) {
 		super();
 		this.uId = uId;
 		this.username = username;
@@ -87,6 +120,9 @@ public class User {
 		this.sex = sex;
 		this.description = description;
 		this.playlists = playlists;
+		this.follows = follows;
+		this.followeds = followeds;
+		this.comments = comments;
 		this.type = type;
 	}
 

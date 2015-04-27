@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import edu.neu.cs5200.mystereo.models.Artist;
+import edu.neu.cs5200.mystereo.models.Artist;
 
 @Path("/artist")
 public class ArtistDao {
@@ -31,19 +32,16 @@ public class ArtistDao {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Artist> createArtist(Artist artist){
-		List<Artist> artists = new ArrayList<Artist>();
+	public void createArtist(Artist artist){
 
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
 
 		em.persist(artist);
-		Query query = em.createQuery("select artist from Artist artist");
-		artists = (List<Artist>) query.getResultList();
+
 		
 		em.getTransaction().commit();
 		em.close();
-		return artists;
 	}
 	
 	//READ
@@ -60,7 +58,25 @@ public class ArtistDao {
 		return artist;
 
 	}
+	public Artist findArtistByMb(String Mbid) {
+		List<Artist> artists=new ArrayList<Artist>();
+		Artist artist=new Artist();
+		em = factory.createEntityManager();
 	
+
+		Query query = em.createQuery("select artist from Artist artist where artist.mbid=?1");
+		query.setParameter(1,Mbid); 
+		artists =(List<Artist>)query.getResultList();
+		for(Artist a:artists)
+		{
+			artist=a;
+		}
+		
+
+
+		em.close();
+		return artist;
+	}
 	//READALL
 	@GET
 	@Path("/")
@@ -83,41 +99,36 @@ public class ArtistDao {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Artist> updateArtist(@PathParam("id")int artistId, Artist artist) {
-		List<Artist> artists = new ArrayList<Artist>();
+	public void updateArtist(@PathParam("id")Integer artistId, Artist artist) {
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
 		
 		artist.setArtistId(artistId);
 		em.merge(artist);
-		Query query = em.createQuery("select artist from Artist artist");
-		artists = (List<Artist>) query.getResultList();
-
 		em.getTransaction().commit();
 		em.close();
-		return artists;
 	}
 	
 	//DELETE
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Artist> removeArtist(@PathParam("id")int artistId){
-		List<Artist> artists = new ArrayList<Artist>();
+	public void removeArtist(@PathParam("id")int artistId){
 		Artist artist = null;
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
 		
 		artist = em.find(Artist.class, artistId);
 		em.remove(artist);
-		
-		Query query = em.createQuery("select artist from Artist artist");
-		artists = (List<Artist>) query.getResultList();
-		
 		em.getTransaction().commit();
 		em.close();
-		
-		return artists;
 	}
-
+       public static void main(String[] args)
+{
+	String atstr="bfcc6d75-a6a5-4bc6-8282-47aec8531818";
+  ArtistDao dao= new ArtistDao();
+  Artist art=new Artist();
+ art=dao.findArtistByMb(atstr);
+  
+}
 }

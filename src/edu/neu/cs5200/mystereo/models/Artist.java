@@ -19,8 +19,6 @@ public class Artist {
 	private String summary;
 	@OneToMany(mappedBy="artist")
 	private List<Album> albums;
-	@OneToMany(mappedBy="artist")
-	private List<Music> music;
 	public Integer getArtistId() {
 		return artistId;
 	}
@@ -63,14 +61,8 @@ public class Artist {
 	public void setAlbums(List<Album> albums) {
 		this.albums = albums;
 	}
-	public List<Music> getMusic() {
-		return music;
-	}
-	public void setMusic(List<Music> music) {
-		this.music = music;
-	}
 	public Artist(Integer artistId, String name, String mbid, String url,
-			String image, String summary, List<Album> albums, List<Music> music) {
+			String image, String summary, List<Album> albums) {
 		super();
 		this.artistId = artistId;
 		this.name = name;
@@ -79,7 +71,6 @@ public class Artist {
 		this.image = image;
 		this.summary = summary;
 		this.albums = albums;
-		this.music = music;
 	}
 	public Artist() {
 		super();

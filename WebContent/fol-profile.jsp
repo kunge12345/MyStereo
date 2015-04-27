@@ -11,42 +11,9 @@
 <%
 UserDao dao = new UserDao();
 FollowDao dao2= new FollowDao();
-String message = (String)(session.getAttribute("userid"));
-Integer id=Integer.parseInt(message);
-if("admin".equals(dao.findUser(id).getType()))
-		{
-	if(request.getParameter("id")!=null)
-	session.setAttribute("invest",  request.getParameter("id"));
-	id=Integer.parseInt((String)session.getAttribute("invest"));
-	
-		}
+String idStr=request.getParameter("id");
+Integer id=Integer.parseInt(idStr);
 User user=dao.findUser(id);
-String action = request.getParameter("action");
-String username  = request.getParameter("username");
-String password  = request.getParameter("password");
-String sex  = request.getParameter("sex");
-String description  = request.getParameter("description");
-	
-if("update".equals(action))
-{
-	 User newuser = new User(user.getuId(), username,password,sex,description,user.getPlaylists(),user.getFollows(),user.getFolloweds(),user.getComments(),"user");
-	dao.updateUser(user.getuId(),newuser); 
-}
-String fidStr  = request.getParameter("fid");
-Integer fid=0;
-if(fidStr!=null)
-{
-      	fid=Integer.parseInt(fidStr);
-}
-if("delete".equals(action))
-{
-	dao2.removeFollow(fid);
-}
-if("add".equals(action))
-{
-	 Follow newfollow = new Follow(null, user,dao.findUserbyName(username));
-	dao2.updateFollow(null,newfollow); 
-}
    List<Follow> follows=new ArrayList<Follow>();
    follows=dao2.findFollowbyuid(id);
    List<Follow> followeds=new ArrayList<Follow>(); followeds=dao2.findFollowedbyuid(id);
@@ -64,16 +31,6 @@ if("add".equals(action))
 				<th>description</th>
 		     	<th>type</th>
 				<th>&nbsp;</th>
-			</tr>
-			<tr>
-				<td><input name="username" class="form-control"/></td>
-				<td><input name="password" class="form-control"/></td>
-				<td><input name="sex" class="form-control"/></td>
-				<td><input name="description" class="form-control"/></td>
-	<td>&nbsp;</td>
-				<td>
-					<button class="btn btn-primary" type="submit" name="action" value="update">update</button>
-				</td>
 			</tr>
 			<tbody>
 
@@ -101,24 +58,11 @@ if("add".equals(action))
 		{
 		%>	
 				<th><%=f.getFollowed().getUsername() %></th><th><a href="fol-profile.jsp?id=<%=f.getFollowed().getuId() %>"> profile</a></th><th><a href="fol-playlist.jsp?id=<%=f.getFollowed().getuId() %>"> playlist</a></th>
-					<th><a href="Profiledetails.jsp?fid=<%=f.getFollowed().getuId() %>&action=delete"> delete</a></th><%
+		<%
 		}
 			%>
 			</tr>
 			</table>
-	<div class="container">
-		<form action="Profiledetails.jsp">
-		<table class="table table-striped">
-		
-			<tr>
-				<td><input name="username" class="form-control"/></td>
-								<td>
-					<button class="btn btn-primary" type="submit" name="action" value="add">add</button>
-				</td>
-			</tr>
-		</table>
-		</form>
-	</div>
 	<h1>
 	who follow you
 	

@@ -9,8 +9,7 @@
 <body>
 hello!
 <%
-
-String idStr = request.getParameter("id");
+String idStr = (String)session.getAttribute("userid");
 Integer id = Integer.parseInt(idStr);
 UserDao dao=new UserDao();
 User user=dao.findUser(id);

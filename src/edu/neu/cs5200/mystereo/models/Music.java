@@ -15,14 +15,13 @@ public class Music {
 	private String mbid;
 	private String url;
 	@ManyToOne
-	@JoinColumn(name="artistId")
-	private Artist artist;
-	@ManyToOne
 	@JoinColumn(name="albumId")
 	private Album album;
 	private String summary;
 	@OneToMany(mappedBy="music")
 	private List<PlayList2Music> playlistEntities;
+	@OneToMany(mappedBy="music")
+	private List<Comment> comments;
 	public String getName() {
 		return name;
 	}
@@ -43,12 +42,6 @@ public class Music {
 	}
 	
 	
-	public Artist getArtist() {
-		return artist;
-	}
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
 	public Album getAlbum() {
 		return album;
 	}
@@ -76,19 +69,29 @@ public class Music {
 		return msid;
 	}	
 	
+	
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	
 	public Music(Integer msid, String name, String mbid, String url,
-			Artist artist, Album album, String summary,
-			List<PlayList2Music> playlistEntities) {
+			Album album, String summary, List<PlayList2Music> playlistEntities,
+			List<Comment> comments) {
 		super();
 		this.msid = msid;
 		this.name = name;
 		this.mbid = mbid;
 		this.url = url;
-		this.artist = artist;
 		this.album = album;
 		this.summary = summary;
 		this.playlistEntities = playlistEntities;
+		this.comments = comments;
 	}
+	
 	public Music() {
 		super();
 	}
