@@ -72,7 +72,7 @@ public class Jartist {
 
 	public Artist parseIntoArtist() {
 		Artist artist = new Artist();
-		artist.setImage(this.getImage().get(2).getText());
+		artist.setImage(this.getImage().get(3).getText());
 		artist.setMbid(this.getMbid());
 		artist.setName(this.getName());
 		if (this.getBio()==null) artist.setSummary("No information found!");

@@ -1,3 +1,7 @@
+<%@page import="java.net.URLDecoder"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.util.*"%>
 <%@page
 	import="org.eclipse.persistence.internal.libraries.antlr.runtime.MismatchedNotSetException"%>
 <%@page import="edu.neu.cs5200.mystereo.client.AlbumClient"%>
@@ -38,89 +42,71 @@
 </head>
 <body>
 	<%
-		MusicDao musicdao = new MusicDao();
+		ArtistClient asc = new ArtistClient();
+		AlbumClient bsc = new AlbumClient();
+		ArtistDao atidao = new ArtistDao();
 		AlbumDao abdao = new AlbumDao();
-		ArtistDao artidao = new ArtistDao();
-		Music m = new Music();
 		Artist art = new Artist();
 		Album b = new Album();
-		String idStr = request.getParameter("id");
-		Integer id = Integer.parseInt(idStr);
+		String alstr = "";
+		String atstr = "";
+		int k1 = 0;
+		int k2 = 0;
+		int k3 = 0;
+		String action = request.getParameter("search");
+		String artist = request.getParameter("artist");
+		String album = request.getParameter("album");
+		if ((artist != null) & (album != null)) {
+			artist = URLEncoder.encode(artist, "UTF-8");
+			album = URLEncoder.encode(album, "UTF-8");
+		}
 
-		m = musicdao.findMusic(id);
-		b = m.getAlbum();
-		art = b.getArtist();
+		if (artist != null) {
+			b = bsc.findAlbumByNameAndArtist(album, artist);
+
+			atstr = b.getArtist().getMbid();
+			alstr = b.getMbid();
+			art = asc.findArtistByMBID(atstr);
+			b.setMusic(null);
+			b.setArtist(null);
+			art.setAlbums(null);
+			if (atidao.findArtistByMb(atstr).getMbid() == null)
+				atidao.createArtist(art);
+			art = atidao.findArtistByMb(atstr);
+			b.setArtist(art);
+
+			if (abdao.findAlbumByMb(alstr).getMbid() == null)
+				abdao.updateAlbum(null, b);
+			b = abdao.findAlbumByMb(alstr);
+
+		}
+
+		String artUrl = "";
 	%>
 
 	<div class="container">
 
 		<div class="jumbotron">
 			<form>
-				<h1>music</h1>
+				<h1>
+					<a href="<%=b.getUrl()%>"><%=b.getName()%></a>
+				</h1>
 			</form>
+
 			<p>
-				<a href=<%=m.getUrl()%>><%=m.getName()%></a>
+				<a href="<%=b.getArtist().getUrl()%>"><%=b.getArtist().getName()%></a>
 			</p>
 			<p>
-				MBID:<%=m.getMbid()%></p>
-			<p>
-				SUMMARY:<%=m.getSummary()%></p>
+				<img src="<%=b.getImage()%>"></img>
+			</p>
+			<p><%=b.getSummary()%></p>
 
 		</div>
-
-
 	</div>
 
-	<div class="container">
-
-		<div class="jumbotron">
-
-			<div class="row">
-				<div class="col-md-9">
-					<h1>Album</h1>
-					<a href=<%=b.getUrl()%>><%=b.getName()%></a> <br> MBID:<%=b.getMbid()%></p>
-
-				</div>
-				<div class="col-md-3">
-					<img align="top" src="<%=b.getImage()%>"></img>
-				</div>
-			</div>
-			<p><%=m.getSummary()%></p>
-
-		</div>
+	<a href="hello.jsp">return</a>
 
 
-	</div>
-
-	<div class="container">
-
-		<div class="jumbotron">
-
-
-			<div class="row">
-				<div class="col-md-9">
-					<h1>Artist</h1>
-
-						<a href=<%=art.getUrl()%>><%=art.getName()%></a><br>
-					
-
-					<p><%=art.getMbid()%></p>
-				</div>
-				<div class="col-md-3">
-					<img align="top" src="<%=art.getImage()%>"></img>
-				</div>
-			</div>
-
-			<p><%=art.getSummary()%></p>
-
-
-		</div>
-
-
-	</div>
-	<h2>
-		<a href="hello.jsp">return</a>
-	</h2>
 
 
 	<script

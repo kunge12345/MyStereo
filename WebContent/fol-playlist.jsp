@@ -11,7 +11,6 @@
 <body>
 	<div class="container">
 		<%
-		UserDao dao2 = new UserDao();
 			PlayListDao dao = new PlayListDao();
 			String idStr= request.getParameter("id");
 			Integer idd =Integer.parseInt(idStr);

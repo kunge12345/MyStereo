@@ -28,7 +28,7 @@
 			List<PlayList2Music> p2m = dao2.findMusicbyPid(id);
 		%>
 		<h1>
-			My music
+			 music
 		</h1>
 		<table class="table table-striped">
 			<tr>

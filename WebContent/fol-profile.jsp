@@ -26,7 +26,6 @@ User user=dao.findUser(id);
 		<table class="table table-striped">
 			<tr>
 				<th>username</th>
-				<th>password</th>
 				<th>sex</th>
 				<th>description</th>
 		     	<th>type</th>
@@ -36,7 +35,6 @@ User user=dao.findUser(id);
 
 				<tr>
 					<td><%= user.getUsername() %></td>
-					<td><%= user.getPassword() %></td>
 					<td><%= user.getSex() %></td>
 					<td><%= user.getDescription() %></td>
 					<td><%= user.getType() %></td>
@@ -47,7 +45,7 @@ User user=dao.findUser(id);
 		</form>
 	</div>
 	<h1>
-	who  you follow
+	who  <%=user.getUsername() %> follow
 	</h1><table>
 				<tr>
 				<th>username</th>
@@ -64,7 +62,7 @@ User user=dao.findUser(id);
 			</tr>
 			</table>
 	<h1>
-	who follow you
+	who follow <%=user.getUsername()%>
 	
 	</h1><table>
 				<tr>

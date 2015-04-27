@@ -2,7 +2,8 @@
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.util.*"%>
-<%@page import="org.eclipse.persistence.internal.libraries.antlr.runtime.MismatchedNotSetException"%>
+<%@page
+	import="org.eclipse.persistence.internal.libraries.antlr.runtime.MismatchedNotSetException"%>
 <%@page import="edu.neu.cs5200.mystereo.client.AlbumClient"%>
 <%@page import="edu.neu.cs5200.mystereo.client.ArtistClient"%>
 <%@page import="edu.neu.cs5200.mystereo.client.MusicClient"%>
@@ -29,9 +30,9 @@
 <!-- Latest compiled and minified JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-
-
+<style>
+div#comment{border:1px solid #000} 
+</style>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -130,6 +131,7 @@
 		User user = udao.findUser(uId);
 		String act = request.getParameter("act");
 		String name = request.getParameter("name");
+		String title = request.getParameter("title");
 		
 		
 		
@@ -138,21 +140,21 @@
 			Integer mbt=(Integer)session.getAttribute("mbt");
 			m=musicdao.findMusic(mbt);
 			
-			Comment comment = new Comment(null, null, name, user, m);
+			Comment comment = new Comment(null, title, name, user, m);
 			cdao.createComment(comment);
 			
 			
 		}
 
 		
-			// JSP codes to display comments
-		 List<Comment> comments=new ArrayList<Comment>();
+		// JSP codes to display comments
+		List<Comment> comments=new ArrayList<Comment>();
 		List<Comment> commentss =  cdao.findAllComments();
-	for(Comment c:commentss)
-	{
-		if(c.getMusic().getMsid()==m.getMsid())
-			comments.add(c);
-	}
+		for(Comment c:commentss)
+		{
+			if(c.getMusic().getMsid()==m.getMsid())
+				comments.add(c);
+		}
 		
 
 	%>
@@ -160,8 +162,8 @@
 	<div class="container">
 
 		<div class="jumbotron">
-            <form>
-			<h1><%=m.getName()%></h1>
+			<form>
+				<h1><%=m.getName()%></h1>
 			</form>
 			<p>
 				<a href="chooseplaylist.jsp?id=<%=m.getMbid()%>">addtoplaylist</a>
@@ -175,7 +177,7 @@
 			<p><%=m.getSummary()%></p>
 
 		</div>
-		
+
 		<!-- Display comments -->
 		<%
 			if (comments.isEmpty()!=true) {
@@ -184,9 +186,13 @@
 			<%
 				for (Comment cmt : comments) {
 			%>
+			<div id="comment">
+			<h3>Title: <%=cmt.getTitle()%></h3>
+			<p><a href="fol-profile.jsp?id=<%=cmt.getUser().getuId()%>">Username: <%=cmt.getUser().getUsername()%></a></p>
 			<p>
-				<%=cmt.getContent()%>
+				Content: <%=cmt.getContent()%>
 			</p>
+			</div>
 			<%
 				}
 			%>
@@ -197,7 +203,8 @@
 		<!-- Add a new comment -->
 		<form action="DisplaySong.jsp">
 			<div class="jumbotron">
-				<textarea rows="3" cols="100" name="name"></textarea>
+				<input type="text" name="title" placeholder="Title..."></input><br />
+				<textarea rows="3" cols="100" name="name" placeholder="Comment..."></textarea>
 				<br>
 				<button class="btn btn-primary" type="submit" name="act"
 					value="create">Submit</button>
@@ -207,7 +214,7 @@
 
 	</div>
 
-<a href="hello.jsp">return</a>
+	<a href="hello.jsp">return</a>
 
 
 
