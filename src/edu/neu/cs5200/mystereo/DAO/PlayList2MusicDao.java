@@ -96,8 +96,8 @@ public class PlayList2MusicDao {
 	
 	//DELETE
 	
-	public List<PlayList2Music> removePlayList2Music(int playlist2musicId){
-		List<PlayList2Music> playlist2musics = new ArrayList<PlayList2Music>();
+	public void removePlayList2Music(int playlist2musicId){
+		
 		PlayList2Music playlist2music = null;
 		em = factory.createEntityManager();
 		em.getTransaction().begin();
@@ -105,13 +105,12 @@ public class PlayList2MusicDao {
 		playlist2music = em.find(PlayList2Music.class, playlist2musicId);
 		em.remove(playlist2music);
 		
-		Query query = em.createQuery("select playlist2music from PlayList2Music playlist2music");
-		playlist2musics = (List<PlayList2Music>) query.getResultList();
+	
 		
 		em.getTransaction().commit();
 		em.close();
 		
-		return playlist2musics;
+		
 	}
 
 }

@@ -1,4 +1,7 @@
-<%@page import="java.util.List"%>
+<%@page import="java.net.URLDecoder"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.util.*"%>
 <%@page import="org.eclipse.persistence.internal.libraries.antlr.runtime.MismatchedNotSetException"%>
 <%@page import="edu.neu.cs5200.mystereo.client.AlbumClient"%>
 <%@page import="edu.neu.cs5200.mystereo.client.ArtistClient"%>
@@ -60,11 +63,15 @@
 		String artist = request.getParameter("artist");
 		String playliststr = request.getParameter("pId");
 		String track = request.getParameter("track");
-		if(artist!=null)
-		{
-		artist.replace(" ", "%20");
-		track.replace(" ", "%20");
+		System.out.println(artist);
+		System.out.println(track);
+		if((artist!=null)&(track!=null)){
+			artist = URLEncoder.encode(artist,"UTF-8");
+			track = URLEncoder.encode(track,"UTF-8");
 		}
+
+		System.out.println(artist);
+		System.out.println(track);
 		
 		
 		
@@ -123,18 +130,30 @@
 		User user = udao.findUser(uId);
 		String act = request.getParameter("act");
 		String name = request.getParameter("name");
+		
+		
+		
+		CommentDao cdao = new CommentDao();
 		if ("create".equals(act)) {
 			Integer mbt=(Integer)session.getAttribute("mbt");
 			m=musicdao.findMusic(mbt);
-			CommentDao cdao = new CommentDao();
+			
 			Comment comment = new Comment(null, null, name, user, m);
 			cdao.createComment(comment);
 			
 			
 		}
 
-		// JSP codes to display comments 
-		List<Comment> comments = m.getComments();
+		
+			// JSP codes to display comments
+		 List<Comment> comments=new ArrayList<Comment>();
+		List<Comment> commentss =  cdao.findAllComments();
+	for(Comment c:commentss)
+	{
+		if(c.getMusic().getMsid()==m.getMsid())
+			comments.add(c);
+	}
+		
 
 	%>
 
@@ -159,7 +178,7 @@
 		
 		<!-- Display comments -->
 		<%
-			if (comments != null) {
+			if (comments.isEmpty()!=true) {
 		%>
 		<div class="jumbotron">
 			<%

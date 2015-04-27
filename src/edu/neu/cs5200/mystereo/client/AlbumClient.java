@@ -25,7 +25,7 @@ public class AlbumClient {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = getJsonStringForUrl(urlStr);
 		json = json.substring(9, json.length() - 1);
-		Jalbum jalbum = new Jalbum();
+		Jalbum  jalbum = new Jalbum();
 		try {
 			jalbum = mapper.readValue(json, Jalbum.class);
 		} catch (JsonParseException e) {

@@ -50,7 +50,7 @@
 					<%= play.getMusic().getName() %>
 					</a>
 				<td>
-					<a href="playlistDetails.jsp?action=delete&id=<%= play.getMusic().getMsid() %>&idd=<%= play.getId() %>" class="btn btn-danger">Delete</a>
+					<a href="playlistDetails.jsp?action=delete&id=<%= play.getPlaylist().getpId()%>&idd=<%= play.getId() %>" class="btn btn-danger">Delete</a>
 				</td>
 			</tr>
 		<%

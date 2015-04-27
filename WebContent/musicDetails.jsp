@@ -77,13 +77,22 @@
 
 		<div class="jumbotron">
             <form>
-			<h1>Album </h1>
+            <p>
+			
 			</form>
-			<p>
+			<div class="row">
+			<div class="col-md-6">
+			<h1>Album </h1>
 			<a href=<%=b.getUrl()%>><%=b.getName()%></a>
 			</p>
 
-			<p>MBID:<%=m.getMbid()%></p>
+			<p>MBID:<%=b.getMbid()%></p>
+			
+			</div>
+			<div class="col-md-6">
+			<img  align="top" align="right" src="<%=b.getImage()%>"></img>
+			</div>
+			</div>
 			<p><%=m.getSummary()%></p>
 
 		</div>
