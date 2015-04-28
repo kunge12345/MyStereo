@@ -34,7 +34,7 @@ CREATE TABLE `album` (
   PRIMARY KEY (`albumId`),
   KEY `artistId_idx` (`artistId`),
   CONSTRAINT `artistId` FOREIGN KEY (`artistId`) REFERENCES `artist` (`artistId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `album` (
 
 LOCK TABLES `album` WRITE;
 /*!40000 ALTER TABLE `album` DISABLE KEYS */;
-INSERT INTO `album` VALUES (47,'The Very Best of Cher','6000ec97-993e-436c-8fde-5cfb7ba844b0','http://www.last.fm/music/Cher/The+Very+Best+of+Cher','    3 May 2005, 00:00','http://userserve-ak.last.fm/serve/174s/71997588.png','No Information Found!',101),(48,'Meteora','6d4734bf-6d00-43ec-ad1f-63c1a7c814c4','http://www.last.fm/music/Linkin+Park/Meteora','    25 Mar 2003, 00:00','http://userserve-ak.last.fm/serve/174s/52490659.png','Meteora is the second studio album by American rock band Linkin Park, released on March 25, 2003. Following the collaboration album Reanimation which featured remixes of their debut album Hybrid Theory. Linkin Park released singles from Meteora for over a year, including &quot;Somewhere I Belong&quot;, &quot;Faint&quot;, &quot;Lying from You&quot;, &quot;From the Inside&quot;, &quot;Breaking the Habit&quot; and &quot;Numb&quot;.  It is the most successful album in the history of the Modern Rock Tracks chart, a chart that specializes in radio play of alternative rock songs.',102);
+INSERT INTO `album` VALUES (47,'The Very Best of Cher','6000ec97-993e-436c-8fde-5cfb7ba844b0','http://www.last.fm/music/Cher/The+Very+Best+of+Cher','    3 May 2005, 00:00','http://userserve-ak.last.fm/serve/174s/71997588.png','No Information Found!',101),(48,'Meteora','6d4734bf-6d00-43ec-ad1f-63c1a7c814c4','http://www.last.fm/music/Linkin+Park/Meteora','    25 Mar 2003, 00:00','http://userserve-ak.last.fm/serve/174s/52490659.png','Meteora is the second studio album by American rock band Linkin Park, released on March 25, 2003. Following the collaboration album Reanimation which featured remixes of their debut album Hybrid Theory. Linkin Park released singles from Meteora for over a year, including &quot;Somewhere I Belong&quot;, &quot;Faint&quot;, &quot;Lying from You&quot;, &quot;From the Inside&quot;, &quot;Breaking the Habit&quot; and &quot;Numb&quot;.  It is the most successful album in the history of the Modern Rock Tracks chart, a chart that specializes in radio play of alternative rock songs.',102),(49,'Living Things','7e8bf5e5-7536-403b-8eb8-3f4f6654a380','http://www.last.fm/music/Linkin+Park/Living+Things','    22 Jun 2012, 00:00','http://userserve-ak.last.fm/serve/174s/77571922.png','Living Things is the fifth studio album by the American rock band Linkin Park. It was released under <a href=\"http://www.last.fm/label/Warner+Bros.+Records\" class=\"bbcode_label\">Warner Bros. Records</a> and <span title=\"Unknown label\" class=\"bbcode_unknown\">Machine Shop Recordings</span> on June 20, 2012, in Japan, and throughout the rest of the world during the following week. Production was handled by vocalist Mike Shinoda and Rick Rubin, who both co-produced the band\'s previous two studio albums <a title=\"Linkin Park - Minutes to Midnight\" href=\"http://www.last.fm/music/Linkin+Park/Minutes+to+Midnight\" class=\"bbcode_album\">Minutes to Midnight</a> (2007) and <a title=\"Linkin Park - A Thousand Suns\" href=\"http://www.last.fm/music/Linkin+Park/A+Thousand+Suns\" class=\"bbcode_album\">A Thousand Suns</a> (2010).  ',102),(50,'Meterora','','http://www.last.fm/music/Linkin+Park/Meterora','    ','','No Information Found!',102);
 /*!40000 ALTER TABLE `album` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +62,7 @@ CREATE TABLE `artist` (
   `image` varchar(255) DEFAULT NULL,
   `summary` varchar(3000) DEFAULT NULL,
   PRIMARY KEY (`artistId`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,9 +91,9 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id`),
   KEY `c2u_idx` (`uId`),
   KEY `c2m_idx` (`msId`),
-  CONSTRAINT `c2m` FOREIGN KEY (`msId`) REFERENCES `music` (`msid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `c2u` FOREIGN KEY (`uId`) REFERENCES `user` (`uId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+  CONSTRAINT `c2m` FOREIGN KEY (`msId`) REFERENCES `music` (`msid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `c2u` FOREIGN KEY (`uId`) REFERENCES `user` (`uId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +102,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (71,'Wow','Comment',4,52);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,9 +120,9 @@ CREATE TABLE `follow` (
   PRIMARY KEY (`fid`),
   KEY `follow_idx` (`follow`),
   KEY `followed_idx` (`followed`),
-  CONSTRAINT `follow` FOREIGN KEY (`follow`) REFERENCES `user` (`uId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `followed` FOREIGN KEY (`followed`) REFERENCES `user` (`uId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  CONSTRAINT `follow` FOREIGN KEY (`follow`) REFERENCES `user` (`uId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `followed` FOREIGN KEY (`followed`) REFERENCES `user` (`uId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +131,7 @@ CREATE TABLE `follow` (
 
 LOCK TABLES `follow` WRITE;
 /*!40000 ALTER TABLE `follow` DISABLE KEYS */;
-INSERT INTO `follow` VALUES (2,2,1),(3,2,3),(4,4,2);
+INSERT INTO `follow` VALUES (5,4,2),(25,10,2),(26,12,2),(27,13,2),(28,16,2);
 /*!40000 ALTER TABLE `follow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,10 +149,11 @@ CREATE TABLE `music` (
   `url` varchar(255) NOT NULL,
   `albumId` int(11) DEFAULT NULL,
   `summary` varchar(20480) DEFAULT NULL,
+  `tag` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`msid`),
   KEY `albumId_idx` (`albumId`),
   CONSTRAINT `albumId` FOREIGN KEY (`albumId`) REFERENCES `album` (`albumId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +162,7 @@ CREATE TABLE `music` (
 
 LOCK TABLES `music` WRITE;
 /*!40000 ALTER TABLE `music` DISABLE KEYS */;
-INSERT INTO `music` VALUES (45,'Believe','13194c93-89c6-4ab4-aaf2-15db5d73b74e','http://www.last.fm/music/Cher/_/Believe',47,'&quot;Believe&quot; is a Grammy Award winning global number one, Multi-Platinum Dance Song which served as the world-wide lead single for American singer Cher\'s twenty-third studio album Believe. It is noted for its use of a peculiar sound effect on the singer\'s vocals, which is referred to as the Cher effect today.  &quot;Believe&quot; was written by a number of writers including Paul Barry, Matt Gray, Brian Higgins, Stuart McLellan, Timothy Powell, and Steven Torch.'),(46,'Numb','22520b2e-f854-4aea-9e38-76e1caa7cd07','http://www.last.fm/music/Linkin+Park/_/Numb',48,'Overview\n &quot;Numb&quot; is the thirteenth and final song on the 2003 album <a title=\"Linkin Park - Meteora\" href=\"http://www.last.fm/music/Linkin+Park/Meteora\" class=\"bbcode_album\">Meteora</a> by the American nu metal band <a href=\"http://www.last.fm/music/Linkin+Park\" class=\"bbcode_artist\">Linkin Park</a>. It was released as album\'s third single. One of <a href=\"http://www.last.fm/music/Linkin+Park\" class=\"bbcode_artist\">Linkin Park</a>\'s most well known and popular tracks, &quot;Numb&quot; topped the Billboard Hot Modern Rock Tracks chart for 12 weeks. The song spent six weeks at the top of the chart in 2003 and six weeks in 2004, making it the only song in history to be the most successful song of the year on the Hot Modern Rock Tracks chart for two years.');
+INSERT INTO `music` VALUES (49,'Believe','13194c93-89c6-4ab4-aaf2-15db5d73b74e','http://www.last.fm/music/Cher/_/Believe',47,'&quot;Believe&quot; is a Grammy Award winning global number one, Multi-Platinum Dance Song which served as the world-wide lead single for American singer Cher\'s twenty-third studio album Believe. It is noted for its use of a peculiar sound effect on the singer\'s vocals, which is referred to as the Cher effect today.  &quot;Believe&quot; was written by a number of writers including Paul Barry, Matt Gray, Brian Higgins, Stuart McLellan, Timothy Powell, and Steven Torch.','pop'),(50,'Burn It Down','7835b3da-16d4-4082-b379-c173cd71d3ec','http://www.last.fm/music/Linkin+Park/_/Burn+It+Down',49,'&quot;Burn It Down&quot; is a song by American rock band Linkin Park. The song was released to radio stations, as well as a digital download on April 16, 2012, as the lead single from their fifth studio album &quot;Living Things&quot;. The song was written by the band and produced by co-lead vocalist Mike Shinoda and Rick Rubin who co-produced the band\'s studio albums &quot;Minutes to Midnight&quot; (2007) and &quot;A Thousand Suns&quot; (2010). A music video for the song was directed by Linkin Park turntablist Joe Hahn','rock'),(51,'Faint','08c1e897-6d76-43d1-8890-49fafd1cb1e2','http://www.last.fm/music/Linkin+Park/_/Faint',48,'No information found','rock'),(52,'Numb','22520b2e-f854-4aea-9e38-76e1caa7cd07','http://www.last.fm/music/Linkin+Park/_/Numb',48,'Overview\n &quot;Numb&quot; is the thirteenth and final song on the 2003 album <a title=\"Linkin Park - Meteora\" href=\"http://www.last.fm/music/Linkin+Park/Meteora\" class=\"bbcode_album\">Meteora</a> by the American nu metal band <a href=\"http://www.last.fm/music/Linkin+Park\" class=\"bbcode_artist\">Linkin Park</a>. It was released as album\'s third single. One of <a href=\"http://www.last.fm/music/Linkin+Park\" class=\"bbcode_artist\">Linkin Park</a>\'s most well known and popular tracks, &quot;Numb&quot; topped the Billboard Hot Modern Rock Tracks chart for 12 weeks. The song spent six weeks at the top of the chart in 2003 and six weeks in 2004, making it the only song in history to be the most successful song of the year on the Hot Modern Rock Tracks chart for two years.','rock');
 /*!40000 ALTER TABLE `music` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,8 +179,8 @@ CREATE TABLE `playlist` (
   `userId` int(11) NOT NULL,
   PRIMARY KEY (`pId`),
   KEY `userId_idx` (`userId`),
-  CONSTRAINT `userId` FOREIGN KEY (`userId`) REFERENCES `user` (`uId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+  CONSTRAINT `userId` FOREIGN KEY (`userId`) REFERENCES `user` (`uId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +189,7 @@ CREATE TABLE `playlist` (
 
 LOCK TABLES `playlist` WRITE;
 /*!40000 ALTER TABLE `playlist` DISABLE KEYS */;
-INSERT INTO `playlist` VALUES (12,'123',2),(13,'123',3),(14,'hahah',4),(15,'nc',4);
+INSERT INTO `playlist` VALUES (14,'hahah',4),(15,'new playlist',4),(16,'newplaylist',10),(17,'newplaylist',12),(18,'newplaylist',13),(19,'playlist',16);
 /*!40000 ALTER TABLE `playlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +209,7 @@ CREATE TABLE `playlist2music` (
   KEY `music_idx` (`musicId`),
   CONSTRAINT `music` FOREIGN KEY (`musicId`) REFERENCES `music` (`msid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `playlist` FOREIGN KEY (`playlistId`) REFERENCES `playlist` (`pId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +218,7 @@ CREATE TABLE `playlist2music` (
 
 LOCK TABLES `playlist2music` WRITE;
 /*!40000 ALTER TABLE `playlist2music` DISABLE KEYS */;
-INSERT INTO `playlist2music` VALUES (24,14,45),(30,14,46),(32,12,45);
+INSERT INTO `playlist2music` VALUES (34,14,49),(35,15,52),(37,18,52),(38,19,52);
 /*!40000 ALTER TABLE `playlist2music` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +238,7 @@ CREATE TABLE `user` (
   `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`uId`),
   UNIQUE KEY `userName_UNIQUE` (`userName`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +247,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'aloha','gggg','male','123','user'),(2,'1','1','female','123','admin'),(3,'a','a','male','asd','user'),(4,'123','123','male','ewqewe','user'),(5,'','','male','','user');
+INSERT INTO `user` VALUES (2,'1','1','female','123','admin'),(4,'we','123','male','hghhh','user'),(7,'kunge','kg123','male','whatever','user'),(9,'qweqwe','qwe','male','123','user'),(10,'newuser2','12345','male','descriptiondssfdasfafdsfs','user'),(11,'rose','123','male','bad','admin'),(12,'user123','12345','male','blank','user'),(13,'user1234','12345','male','hello','user'),(14,'','','male','','user'),(16,'user5','12345','male','hello','user'),(17,'jackson','123','male','123','admin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-27 11:53:22
+-- Dump completed on 2015-04-28 15:09:05
