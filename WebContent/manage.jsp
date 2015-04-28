@@ -69,25 +69,26 @@
 						<th>description</th>
 						<th>type</th>
 					</tr>
+					</thead>
 					<tr>
-						<th><input class="form-control" name="id" value="<%=id%>"
-							readonly /></th>
-						<th><input class="form-control" name="username"
-							placeholder="Username" value="<%=username%>" /></th>
-						<th><input class="form-control" name="password"
-							placeholder="Passsword" value="<%=password%>" /></th>
-						<th><input class="form-control" name="sex" placeholder="sex"
-							value="<%=sex%>" /></th>
-						<th><input class="form-control" name="des"
-							placeholder="desription" value="<%=des%>" /></th>
-						<th><input class="form-control" name="type"
-							placeholder="type" value="<%=type%>" /></th>
-						<th>
+						<td><input class="form-control" name="id" value="<%=id%>"
+							readonly /></td>
+						<td><input class="form-control" name="username"
+							placeholder="Username" value="<%=username%>" /></td>
+						<td><input class="form-control" name="password"
+							placeholder="Passsword" value="<%=password%>" /></td>
+						<td><input class="form-control" name="sex" placeholder="sex"
+							value="<%=sex%>" /></td>
+						<td><input class="form-control" name="des"
+							placeholder="desription" value="<%=des%>" /></td>
+						<td><input class="form-control" name="type"
+							placeholder="type" value="<%=type%>" /></td>
+						<td>
 							<button class="btn btn-success" name="action" value="create">Add</button>
 							<button class="btn btn-primary" name="action" value="update">Update</button>
-						</th>
+						</td>
 					</tr>
-				</thead>
+				
 				<tbody>
 					<%
     for(User user : users)
@@ -96,7 +97,7 @@
 					<tr>
 						<td><%=user.getuId() %></td>
 						<td><a href="fol-profile.jsp?id=<%=user.getuId()%>"><%=user.getUsername() %></a></td>
-						<td><%=user.getUsername() %></td>
+						
 						<td><%=user.getPassword() %></td>
 						<td><%=user.getSex() %></td>
 						<td><%=user.getDescription() %></td>

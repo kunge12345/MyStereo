@@ -50,20 +50,20 @@
 		
 		String atstr="";
 		String artist = request.getParameter("artist");
+	
+		if((artist!=null)){
+			artist = URLEncoder.encode(artist,"UTF-8");
+			
+		}
 		int err=0;
 		String FIND_ARTIST_BY_NAME = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=ARTIST&api_key=14debcea4d95e934a86515e3327ee949&format=json";
 		String urlStr = FIND_ARTIST_BY_NAME.replace("ARTIST", artist);
 		String json = asc.getJsonStringForUrl(urlStr);
 	json = json.substring(2, 7);
-			if("error".equals(json))
-				err=1;
-		if((artist!=null)){
-			artist = URLEncoder.encode(artist,"UTF-8");
-			
-		}
 
 
-		
+	if("error".equals(json))
+		err=1;
 		
 		
 

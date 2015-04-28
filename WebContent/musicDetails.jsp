@@ -63,6 +63,8 @@
 			</p>
 			<p>
 				MBID:<%=m.getMbid()%></p>
+					<p>
+				TAG:<a href="musictag.jsp?type=<%=m.getTag()%>"><%=m.getTag()%></a></p>
 			<p>
 				SUMMARY:<%=m.getSummary()%></p>
 

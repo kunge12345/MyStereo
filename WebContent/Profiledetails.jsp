@@ -31,13 +31,13 @@ div#comment {
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 <title>Personal Profile</title>
 </head>
 <body>
 	<%
 		UserDao dao = new UserDao();
 		FollowDao dao2 = new FollowDao();
+		User user2 =new User(); 
 		String message = (String) (session.getAttribute("userid"));
 		Integer id = Integer.parseInt(message);
 		if ("admin".equals(dao.findUser(id).getType())) {
@@ -48,13 +48,19 @@ div#comment {
 		}
 		User user = dao.findUser(id);
 		String action = request.getParameter("action");
+		String username1 = request.getParameter("username1");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String sex = request.getParameter("sex");
 		String description = request.getParameter("description");
-
+		user2=dao.findUserbyName(username);
+	
+		int error=0;
+      if(user2.getUsername()==null&"add".equals(action))
+    		error=1;
+    	  
 		if ("update".equals(action)) {
-			User newuser = new User(user.getuId(), username, password, sex,
+			User newuser = new User(user.getuId(), username1, password, sex,
 					description, user.getPlaylists(), user.getFollows(),
 					user.getFolloweds(), user.getComments(), "user");
 			dao.updateUser(user.getuId(), newuser);
@@ -64,22 +70,34 @@ div#comment {
 		if (fidStr != null) {
 			fid = Integer.parseInt(fidStr);
 		}
+		String cidStr = request.getParameter("cid");
+		Integer cid = 0;
+		if (cidStr != null) {
+			cid = Integer.parseInt(cidStr);
+		}
 		if ("delete".equals(action)) {
 			dao2.removeFollow(fid);
 		}
+		
+		if(error==0)
+		{
 		if ("add".equals(action)) {
 			Follow newfollow = new Follow(null, user,
 					dao.findUserbyName(username));
-			dao2.updateFollow(null, newfollow);
+			dao2.updateFollow(null, newfollow);}
 		}
 		List<Follow> follows = new ArrayList<Follow>();
 		follows = dao2.findFollowbyuid(id);
 		List<Follow> followeds = new ArrayList<Follow>();
 		followeds = dao2.findFollowedbyuid(id);
 		CommentDao dao3 = new CommentDao();
+		if ("deletecomment".equals(action)) {
+			dao3.removeComment(cid);
+		}
 		List<Comment> comments = new ArrayList<Comment>();
 		comments = dao3.findAllComments();
 	%>
+	
 	<div class="container">
 		<div class="container">
 			<h1><%=user.getUsername()%>'s Profile
@@ -96,24 +114,18 @@ div#comment {
 					</tr>
 
 					<tbody>
+						
 						<tr>
-							<td><%=user.getUsername()%></td>
-							<td><%=user.getPassword()%></td>
-							<td><%=user.getSex()%></td>
-							<td><%=user.getDescription()%></td>
+							<td><input name="username1" class="form-control"value=<%=user.getUsername()%>></td>
+							<td><input name="password" class="form-control"value=<%=user.getPassword()%>></td>
+							<td><input name="sex" class="form-control"value=<%=user.getSex()%>></td>
+							<td><input name="description" class="form-control"value=<%=user.getDescription()%>></td>
 							<td><%=user.getType()%></td>
-						</tr>
-						<tr>
-							<td><input name="username" class="form-control" /><%=user.getUsername()%></td>
-							<td><input name="password" class="form-control" /><%=user.getPassword()%></td>
-							<td><input name="sex" class="form-control" /><%=user.getSex()%></td>
-							<td><input name="description" class="form-control" /><%=user.getDescription()%></td>
-							<td>&nbsp;</td>
 							<td>
 								<button class="btn btn-primary" type="submit" name="action"
 									value="update">update</button>
 							</td>
-						</tr>
+						</tr>      
 					</tbody>
 				</table>
 			</form>
@@ -142,6 +154,7 @@ div#comment {
 					<td><a
 						href="Profiledetails.jsp?fid=<%=f.getFid()%>&action=delete"
 						type="button" class="btn btn-danger"> delete</a></td>
+				
 				</tr>
 				<%
 					}
@@ -159,6 +172,8 @@ div#comment {
 						<td>
 							<button class="btn btn-primary" type="submit" name="action"
 								value="add">add</button>
+								<% if(error==1)
+		out.println("username can't be find");%>
 						</td>
 					</tr>
 				</table>
@@ -206,10 +221,12 @@ div#comment {
 					href="musicDetails.jsp?id=<%=comment.getMusic().getMsid()%>"><%=comment.getMusic().getName()%></a></th>
 				</tr>
 				<tr>
-					<td>Title:<%=comment.getTitle()%></th>
+					<td>Title:<%=comment.getTitle()%><a
+						href="Profiledetails.jsp?cid=<%=comment.getId()%>&action=deletecomment"
+						type="button" class="btn btn-danger"> delete</a></td>
 				</tr>
 				<tr>
-					<td>Content:<%=comment.getContent()%></th>
+					<td>Content:<%=comment.getContent()%></td>
 				</tr>
 			</table>
 		</div>

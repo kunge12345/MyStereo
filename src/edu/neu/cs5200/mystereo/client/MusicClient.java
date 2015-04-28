@@ -91,8 +91,6 @@ public class MusicClient {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MusicClient mymc = new MusicClient();
-		Music music = mymc.findSongByNameAndArtist("Cher", "Believe");
-		System.out.println(music.getAlbum().getSummary());
 	}
 
 }

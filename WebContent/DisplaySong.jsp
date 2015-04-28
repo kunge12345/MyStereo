@@ -70,18 +70,20 @@ div#comment {
 		System.out.println(track);
 		
 		int err=0;
-String FIND_SONG_BY_NAME_AND_ARTIST = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&artist=ARTIST&track=TRACK&format=json";
-		 String FIND_SONG_BY_MBID = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&mbid=MBID&format=json";
-		String urlStr = FIND_SONG_BY_NAME_AND_ARTIST.replace("ARTIST", artist)
-					.replace("TRACK", track);
-			String json = msc.getJsonStringForUrl(urlStr);
-			json = json.substring(2, 7);
-			if("error".equals(json))
-				err=1;
-			
 		if ((artist != null) & (track != null)) {
+			
 			artist = URLEncoder.encode(artist, "UTF-8");
 			track = URLEncoder.encode(track, "UTF-8");
+			String FIND_SONG_BY_NAME_AND_ARTIST = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&artist=ARTIST&track=TRACK&format=json";
+					 String FIND_SONG_BY_MBID = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=14debcea4d95e934a86515e3327ee949&mbid=MBID&format=json";
+					String urlStr = FIND_SONG_BY_NAME_AND_ARTIST.replace("ARTIST", artist)
+								.replace("TRACK", track);
+						String json = msc.getJsonStringForUrl(urlStr);
+						json = json.substring(2, 7);
+						if("error".equals(json))
+							err=1;
+						
+			
 		}
 
 		System.out.println(artist);
@@ -104,7 +106,7 @@ String FIND_SONG_BY_NAME_AND_ARTIST = "http://ws.audioscrobbler.com/2.0/?method=
 			
 			if(err==1)
 			{
-				m=new Music(null,null,null,null,null,null,null,null);
+				m=new Music(null,null,null,null,null,null,null,null,null);
 			}
 			else
 			{
@@ -195,6 +197,7 @@ if(err==0)
 			<P>
 				<a href=<%=m.getAlbum().getUrl()%>>Album: <%=m.getAlbum().getName()%></a>
 			</P>
+				<p>Music Tag:<a href="musictag.jsp?type=<%=m.getTag()%>"><%=m.getTag()%></a></p>
 			<p><%=m.getSummary()%></p>
 
 		</div>

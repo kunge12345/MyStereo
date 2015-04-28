@@ -14,6 +14,14 @@ public class Music {
 	private String name;
 	private String mbid;
 	private String url;
+	private String tag;
+	public String getTag() {
+		return tag;
+	}
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
 	@ManyToOne
 	@JoinColumn(name="albumId")
 	private Album album;
@@ -76,22 +84,24 @@ public class Music {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
-	}
+	}	
+	
+	 
 	
 	public Music(Integer msid, String name, String mbid, String url,
-			Album album, String summary, List<PlayList2Music> playlistEntities,
-			List<Comment> comments) {
+			String tag, Album album, String summary,
+			List<PlayList2Music> playlistEntities, List<Comment> comments) {
 		super();
 		this.msid = msid;
 		this.name = name;
 		this.mbid = mbid;
 		this.url = url;
+		this.tag = tag;
 		this.album = album;
 		this.summary = summary;
 		this.playlistEntities = playlistEntities;
 		this.comments = comments;
 	}
-	
 	public Music() {
 		super();
 	}

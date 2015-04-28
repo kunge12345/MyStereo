@@ -6,19 +6,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Toptags {
-	private List<Tag> tags;
+	private List<Tag> tag;
 
-	public List<Tag> getTags() {
-		return tags;
+	public List<Tag> getTag() {
+		return tag;
 	}
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
+	public void setTag(List<Tag> tag) {
+		this.tag = tag;
 	}
 
-	public Toptags(List<Tag> tags) {
+	public Toptags(List<Tag> tag) {
 		super();
-		this.tags = tags;
+		this.tag = tag;
 	}
 
 	public Toptags() {

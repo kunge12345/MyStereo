@@ -36,8 +36,14 @@ div#comment {
 </head>
 <body>
 	<%
+	     String checkidStr=(String)session.getAttribute("userid");
+	     Integer checkid=Integer.parseInt(checkidStr);
+	
+	
+	String action = request.getParameter("action");
 		UserDao dao = new UserDao();
 		FollowDao dao2 = new FollowDao();
+		User admin=dao.findUser(checkid);
 		String idStr = request.getParameter("id");
 		Integer id = Integer.parseInt(idStr);
 		User user = dao.findUser(id);
@@ -45,6 +51,17 @@ div#comment {
 		follows = dao2.findFollowbyuid(id);
 		List<Follow> followeds = new ArrayList<Follow>();
 		followeds = dao2.findFollowedbyuid(id);
+		CommentDao dao3 = new CommentDao();
+		String cidStr = request.getParameter("cid");
+		Integer cid = 0;
+		if (cidStr != null) {
+			cid = Integer.parseInt(cidStr);
+		} 
+		if ("deletecomment".equals(action)) {
+			dao3.removeComment(cid);
+		}
+		List<Comment> comments = new ArrayList<Comment>();
+		comments = dao3.findAllComments();
 	%>
 	<h1>Profiles</h1>
 	<div class="container">
@@ -133,8 +150,38 @@ div#comment {
 
 		</table>
 	</div>
-	<a
-		href="hello.jsp?id=<%=Integer.parseInt((String) session.getAttribute("userid"))%>">return</a>
+	<h1><%=user.getUsername()%> comments</h1>
+
+
+		<%
+			for (Comment comment : comments) {
+				if (comment.getUser().getuId() == user.getuId()) {
+		%>
+
+		<div class="jumbotron">
+			<table>
+				<tr>
+					<td>Music: <a
+					href="musicDetails.jsp?id=<%=comment.getMusic().getMsid()%>"><%=comment.getMusic().getName()%></a></th>
+				</tr>
+				<tr>
+					<td>
+					Title:<%=comment.getTitle()%><%if(admin.getType().equals("admin"))
+					{
+					%><a
+						href="Profiledetails.jsp?cid=<%=comment.getId()%>&action=deletecomment&id=<%=user.getuId() %>"
+						type="button" class="btn btn-danger"> delete</a>
+						<%} %>
+						</td>
+				</tr>
+				<tr>
+					<td>Content:<%=comment.getContent()%></td>
+				</tr>
+			</table>
+		</div><%}} %>
+		
+	<a href="hello.jsp?id=<%=checkid%>">return</a>
+		
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

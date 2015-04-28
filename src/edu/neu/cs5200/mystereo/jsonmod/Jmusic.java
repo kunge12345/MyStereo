@@ -118,6 +118,7 @@ public class Jmusic {
 		music.setAlbum(album);
 		music.setMbid(this.getMbid());
 		music.setName(this.getName());
+		music.setTag(this.getToptags().getTag().get(0).getName());
 		music.setUrl(this.getUrl());
 		if (this.getWiki()==null) music.setSummary("No information found");
 		else music.setSummary(this.getWiki().getSummary());
